@@ -30,7 +30,7 @@ func init() {
 }
 
 func GetCredential(apikey string) (*credentials.Credentials, error) {
-	userPassword, err := encrypt(apikey)
+	userPassword, err := decrypt(apikey)
 	if err != nil {
 		return nil, errors.New("invalid api key")
 	}

@@ -12,6 +12,16 @@ import (
 	"net/http"
 )
 
+// RenderDocxTemplate godoc
+// @Summary API generate docx template
+// @Description API generate docx template
+// @Security ApiKey
+// @Tags Template
+// @Accept  json
+// @Produce  json
+// @Param	data	body	vo.DocxRequestGenerate	true	"data"
+// @Success 200 {object} interface{}
+// @Router /v1/template/docx/render [post]
 func RenderDocxTemplate(c *gin.Context) {
 	var request vo.DocxRequestGenerate
 	err := c.Bind(&request)
@@ -55,7 +65,6 @@ func RenderDocxTemplate(c *gin.Context) {
 				}
 			}
 		}
-		return
 	}
 
 	var (
@@ -69,6 +78,9 @@ func RenderDocxTemplate(c *gin.Context) {
 	case "docx":
 		contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
 		data, err = template.Render(request.Parameters)
+	}
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, vo.ErrorResponse{Message: err.Error()})
 	}
 	c.Data(http.StatusOK, contentType, data)
 }

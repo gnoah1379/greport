@@ -1,0 +1,97 @@
+definitions:
+  vo.DocxRequestGenerate:
+    properties:
+      parameters:
+        additionalProperties: {}
+        type: object
+      template:
+        type: string
+      type:
+        enum:
+        - pdf
+        - docx
+        type: string
+    required:
+    - parameters
+    - template
+    - type
+    type: object
+  vo.GenerateApiKeyRequest:
+    properties:
+      accessKeyID:
+        type: string
+      secretAccessKey:
+        type: string
+    required:
+    - accessKeyID
+    - secretAccessKey
+    type: object
+  vo.GenerateApiKeyResponse:
+    properties:
+      apiKey:
+        type: string
+    type: object
+info:
+  contact:
+    email: nguyenhai.hoang1@etc.vn
+    name: API Support
+  description: C08 Document Template API
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Document Template API
+  version: "1.0"
+paths:
+  /v1/apikey:
+    post:
+      consumes:
+      - application/json
+      description: API generate apikey
+      parameters:
+      - description: data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/vo.GenerateApiKeyRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/vo.GenerateApiKeyResponse'
+      summary: API generate apikey
+      tags:
+      - Template
+  /v1/template/docx/render:
+    post:
+      consumes:
+      - application/json
+      description: API generate docx template
+      parameters:
+      - description: data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/vo.DocxRequestGenerate'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: object
+      security:
+      - ApiKey: []
+      summary: API generate docx template
+      tags:
+      - Template
+securityDefinitions:
+  ApiKey:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

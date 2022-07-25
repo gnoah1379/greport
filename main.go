@@ -3,11 +3,26 @@ package main
 import (
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
+	"github.com/spf13/viper"
 	"greport/pkgs/server/router"
 	"os"
 	"time"
 )
 
+// @title Document Template API
+// @version 1.0
+// @description C08 Document Template API
+// @termsOfService http://swagger.io/terms/
+
+// @contact.name API Support
+// @contact.email nguyenhai.hoang1@etc.vn
+
+// @license.name Apache 2.0
+// @license.url http://www.apache.org/licenses/LICENSE-2.0.html
+
+// @securityDefinitions.apikey ApiKey
+// @in header
+// @name Authorization
 func main() {
 	//pwd, _ := os.Getwd()
 	//log.Debug().Msg("pwd: " + pwd)
@@ -49,6 +64,9 @@ func main() {
 	//	panic(err)
 	//}
 	//fmt.Println(objInfo)
+	viper.SetConfigFile("config.yml")
+	viper.SetConfigType("yaml")
+	_ = viper.ReadInConfig()
 
 	r := router.SetupRouter()
 	err := r.Run(":8080")

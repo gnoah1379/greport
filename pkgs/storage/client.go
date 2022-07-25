@@ -8,7 +8,7 @@ import (
 )
 
 var (
-	clients  map[string]*minio.Client
+	clients  = make(map[string]*minio.Client)
 	endpoint string
 	secure   bool
 	once     sync.Once
