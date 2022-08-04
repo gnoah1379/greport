@@ -1,6 +1,7 @@
 package router
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/minio/minio-go/v7"
 	"github.com/rs/zerolog/log"
@@ -10,6 +11,8 @@ import (
 	"greport/pkgs/storage"
 	"io/ioutil"
 	"net/http"
+	"strings"
+	"time"
 )
 
 // RenderDocxTemplate godoc
@@ -38,14 +41,17 @@ func RenderDocxTemplate(c *gin.Context) {
 	}
 	templateObj, err := client.GetObject(c, "docx", request.Template+".docx", minio.GetObjectOptions{})
 	if err != nil {
+		c.JSON(http.StatusInternalServerError, vo.ErrorResponse{Message: err.Error()})
 		return
 	}
 	templateObjStat, err := templateObj.Stat()
 	if err != nil {
+		c.JSON(http.StatusInternalServerError, vo.ErrorResponse{Message: err.Error()})
 		return
 	}
 	template, err := docx.Parse(templateObj, templateObjStat.Size)
 	if err != nil {
+		c.JSON(http.StatusInternalServerError, vo.ErrorResponse{Message: err.Error()})
 		return
 	}
 	schemaObj, err := client.GetObject(c, "docx", request.Template+".schema.json", minio.GetObjectOptions{})
@@ -70,17 +76,22 @@ func RenderDocxTemplate(c *gin.Context) {
 	var (
 		data        []byte
 		contentType string
+		filename    string
 	)
 	switch request.Type {
 	case "pdf":
 		contentType = "application/pdf"
+
+		filename = fmt.Sprintf(`attachment; filename="%s-%d.pdf"`, strings.ReplaceAll(templateObjStat.Key, "/", "-"), time.Now().Unix())
 		data, err = template.RenderPdf(request.Parameters)
 	case "docx":
 		contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+		filename = fmt.Sprintf(`attachment; filename="%s-%d.docx"`, strings.ReplaceAll(templateObjStat.Key, "/", "-"), time.Now().Unix())
 		data, err = template.Render(request.Parameters)
 	}
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, vo.ErrorResponse{Message: err.Error()})
 	}
+	c.Header("Content-Disposition", filename)
 	c.Data(http.StatusOK, contentType, data)
 }

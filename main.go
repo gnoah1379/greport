@@ -26,7 +26,7 @@ import (
 func main() {
 	//pwd, _ := os.Getwd()
 	//log.Debug().Msg("pwd: " + pwd)
-	//data, err := ioutil.ReadFile("./MQD02.docx")
+	//data, err := ioutil.ReadFile("./TEST_MQD02.docx")
 	//if err != nil {
 	//	log.Error().Err(err).Msgf("open file error")
 	//	return
@@ -36,7 +36,12 @@ func main() {
 	//	log.Error().Err(err).Msgf("parse template file error")
 	//	return
 	//}
-	//pdf, err := template.RenderPdf(map[string]any{})
+	//pdf, err := template.RenderPdf(map[string]any{
+	//	"donViCapTren":     "Phong Canh Sat Giao Thong Ha Noi",
+	//	"donViRaQuyetDinh": "Doi tuan tra kiem soat so 1",
+	//	"diaDanhHanhChinh": "Ha Noi",
+	//	"soQD":             "MQD02-00000000000000001",
+	//})
 	//if err != nil {
 	//	log.Error().Err(err).Msgf("render template failed")
 	//	return

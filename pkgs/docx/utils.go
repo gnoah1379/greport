@@ -87,8 +87,8 @@ func convertToPdf(data []byte) ([]byte, error) {
 		return nil, err
 	}
 	log.Debug().Msgf("convert docx to pdf file temp: %s", filename)
-	out, err := exec.Command("soffice",
-		"--headless",
+	out, err := exec.Command("lowriter",
+		"--invisible",
 		"--convert-to",
 		"pdf:writer_pdf_Export",
 		"--outdir",

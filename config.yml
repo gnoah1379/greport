@@ -1,2 +1,2 @@
 minio:
-  endpoint: 10.0.222.153:9000
+  endpoint: localhost:9000
