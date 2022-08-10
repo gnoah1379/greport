@@ -1,0 +1,76 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Authorization Server OpenAPI Specification",
+    "description": "The greeting service definition.",
+    "contact": {
+      "name": "Nguyen Hai Hoang",
+      "email": "nguyenhoang1379@gmail.com"
+    },
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/helloworld/{name}": {
+      "get": {
+        "tags": [
+          "Greeter"
+        ],
+        "description": "Sends a greeting",
+        "operationId": "Greeter_SayHello",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/helloworld.v1.HelloReply"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "helloworld.v1.HelloReply": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          }
+        },
+        "description": "The response message containing the greetings"
+      }
+    },
+    "securitySchemes": {
+      "token": {
+        "type": "http",
+        "description": "JWT Authorization header using Bearer schema.",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "security": [
+    {
+      "token": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "Greeter"
+    }
+  ]
+}
